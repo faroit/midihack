@@ -20,7 +20,7 @@ def myCallback(stream):
                     chordList.append(myChord.pitchedCommonName)
                     numpyArray = np.array(chordList)
                     idx, score = mir.mir.findRepeat(numpyArray)
-                    if idx > -1:
+                    if idx is not None:
                         print "Found loop at " + str(idx)
                         print "Loop score:   " + str(score)
     else:
@@ -30,7 +30,7 @@ def myCallback(stream):
             noteList.append(myNote)
             numpyArray = np.array(noteList)
             idx, score = mir.mir.findRepeat(numpyArray)
-            if idx > -1:
+            if idx is not None:
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
 

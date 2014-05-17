@@ -7,24 +7,24 @@ def corrSequence( seq ):
         myCorr[i] = np.sum(seq == np.roll(seq, i))
     return myCorr/len(seq)
 
-def findRepeat( seq ):
-    
-    if len( seq ) == 1:
-        return [-1, -1]
+
+def findRepeat(seq):
+    if len(seq) == 1:
+        return None, -1
     else:
         # compute "string correlation"
-        corrSeqBool  = corrSequence( seq );
+        corrSeqBool  = corrSequence(seq)
 
         # return index of loop start
-        loopStartIdx = corrSeqBool[1:].argmax() + 1;
+        loopStartIdx = corrSeqBool[1:].argmax() + 1
 
         # interpret "correlation"  as score value
-        loopScore    = corrSeqBool[loopStartIdx];
-        #print loopScore    
-        thresh = 1;
+        loopScore    = corrSeqBool[loopStartIdx]
+        #print loopScore
+        thresh = 1
         if loopScore >= thresh:
             loop = loopStartIdx;
         else:
-            loop = -1
+            loop = None
 
-        return [loop, loopScore]
+        return loop, loopScore
