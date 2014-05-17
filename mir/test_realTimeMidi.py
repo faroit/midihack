@@ -1,3 +1,4 @@
+#  Example from  http://stackoverflow.com/questions/10983462/how-can-i-produce-real-time-audio-output-from-music-made-with-music21 
 #  Set up a detuned piano 
 #  (where each key has a random 
 #  but consistent detuning from 30 cents flat to sharp)
