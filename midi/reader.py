@@ -35,14 +35,6 @@ class ReaderThread(threading.Thread):
             n.duration = music21.duration.Duration('breve')
             timestamp = self.ms_to_samples()
             self.stream.insert(timestamp, n)
-            theChords = stream.chordify()
-            for thisChord in theChords.flat:
-                if 'Chord' not in thisChord.classes:  # not a chord
-                    continue
-                if thisChord.isDominantSeventh():
-                    print "this is dominant"
-                else:
-                    print thisChord.pitchedCommonName
 
     def ms_to_samples(self):
         diff = (time.time() * 1000) - self.start
