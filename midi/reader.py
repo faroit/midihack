@@ -1,8 +1,8 @@
-import sys
 import time
 import rtmidi
 import music21
 import threading
+
 
 class ReaderThread(threading.Thread):
     def __init__(self, device, port, stream):
@@ -30,8 +30,17 @@ class ReaderThread(threading.Thread):
         if msg.isNoteOn():
             n = music21.note.Note()
             n.midi = msg.getNoteNumber()
+            print n.midi
             n.duration = music21.duration.Duration('half')
-            self.stream.append(n)
+            self.stream.insert(0, n)
+            theChords = stream.chordify()
+            for thisChord in theChords.flat:
+                if 'Chord' not in thisChord.classes:  # not a chord
+                    continue
+                if thisChord.isDominantSeventh():
+                    print "this is dominant"
+                else:
+                    print thisChord.pitchedCommonName
 
 
 class Reader():
