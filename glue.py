@@ -4,10 +4,9 @@ import mir
 import midi
 import time
 import music21
+from functools import partial
 
-stream = music21.stream.Stream()
-
-def myCallback():
+def myCallback(stream):
     if False:
         #stream.quantize()
         copy = stream.chordify() 
@@ -41,7 +40,9 @@ def myCallback():
                         print "Loop score:   " + str(loopIdx[1])
 
 
+stream = music21.stream.Stream()
+
 with midi.reader.Reader(stream) as myReader:
-    myReader.register( myCallback )
+    myReader.register(partial(myCallback, stream))
     while True:
         time.sleep(0.001)
