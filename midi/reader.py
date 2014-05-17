@@ -14,11 +14,13 @@ class ReaderThread(threading.Thread):
         self.portName = device.getPortName(port)
         self.device = device
         self.quit = False
+        self.callbacks = []
 
     def run(self):
         self.device.openPort(self.port)
         self.device.ignoreTypes(True, False, True)
         self.start = time.time() * 1000
+        self.i = 0
         while True:
             if self.quit:
                 return
@@ -27,6 +29,16 @@ class ReaderThread(threading.Thread):
                 self.append(msg)
             else:
                 time.sleep(0.001)
+            self.i += 1
+            if self.i == 10:
+                self.dispatch()
+
+    def register(self, callback):
+        self.callbacks.append(callback)
+
+    def dispatch(self):
+        for i in self.callbacks:
+            i()
 
     def append(self, msg):
         if msg.isNoteOn():
@@ -35,6 +47,7 @@ class ReaderThread(threading.Thread):
             n.duration = music21.duration.Duration('breve')
             timestamp = self.ms_to_samples()
             self.stream.insert(timestamp, n)
+            self.i = 0
 
     def ms_to_samples(self):
         diff = (time.time() * 1000) - self.start
