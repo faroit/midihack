@@ -21,12 +21,16 @@ if __name__ == "__main__":
     conn = rpyc.connect('127.0.0.1', 17744)
     live = conn.root.Live.Application.get_application()
     song = live.get_document()
+    #song.tracks[0].clip_slots[0].create_clip(10)
+    song.trigger_session_record()
 
     try:
         if not song.tracks[0].clip_slots[0].clip.is_midi_clip:
             raise ValueError("Selected Clip must be MIDI")
     except AttributeError:
         raise ValueError("Selected Clip must not be empty")
+
+    print song.get_current_beats_song_time()
 
     def callback(live):
         clip = live.get_document().tracks[0].clip_slots[0].clip
