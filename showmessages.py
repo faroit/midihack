@@ -16,7 +16,7 @@ def print_message(midi, port):
             midi.getControllerNumber(), midi.getControllerValue()
 
 
-def add_event(midi, port):
+def addNote(channel, pitch, time, duration, velocity):
     pass
 
 
