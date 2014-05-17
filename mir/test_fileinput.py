@@ -1,5 +1,7 @@
+from __future__ import division
 #import music21
 from music21 import *
+
 #import rtmidi
 
 
@@ -10,13 +12,18 @@ def findRepeat():
         loop = 0
     return loop
 
-s = converter.parse('./data/2.mid')
-s.plot('pianoroll')
+s = converter.parse('./data/6.mid')
+#s.plot('pianoroll')
 #converter.parseData('./data/verySimple2bars.mid')
 cc = s.chordify()
-cc.show('text')
+y = cc.flat
+for x in y:
+	if "Chord" in x.classes:
+		print x.pitchedCommonName 
+
+#cc.show('text')
 #s.show('text')
 
-print harmony.chordSymbolFigureFromChord(chord.Chord(['C3','E3','G3'])) #standard example
+#print harmony.chordSymbolFigureFromChord(chord.Chord(['C3','E3','G3'])) #standard example
 
-print findRepeat()
+#print findRepeat()
