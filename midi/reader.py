@@ -24,7 +24,7 @@ class ReaderThread(threading.Thread):
             if msg:
                 self.append(msg)
             else:
-                time.sleep(0.1)
+                time.sleep(0.001)
 
     def append(self, msg):
         if msg.isNoteOn():
