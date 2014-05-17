@@ -19,20 +19,20 @@ def myCallback(stream):
                 if 2 < len(myChord) < 6:  # and ( myChord.isTriad() ):
                     chordList.append(myChord.pitchedCommonName)
                     numpyArray = np.array(chordList)
-                    loopIdx = mir.mir.findRepeat(numpyArray)
-                    if loopIdx[0] > -1:
-                        print "Found loop at " + str(loopIdx[0])
-                        print "Loop score:   " + str(loopIdx[1])
+                    idx, score = mir.mir.findRepeat(numpyArray)
+                    if idx > -1:
+                        print "Found loop at " + str(idx)
+                        print "Loop score:   " + str(score)
     else:
         copy = stream
         noteList = []
         for myNote in copy:
             noteList.append(myNote)
             numpyArray = np.array(noteList)
-            loopIdx = mir.mir.findRepeat(numpyArray)
-            if loopIdx[0] > -1:
-                print "Found loop at " + str(loopIdx[0])
-                print "Loop score:   " + str(loopIdx[1])
+            idx, score = mir.mir.findRepeat(numpyArray)
+            if idx > -1:
+                print "Found loop at " + str(idx)
+                print "Loop score:   " + str(score)
 
 
 stream = music21.stream.Stream()
