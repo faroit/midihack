@@ -27,14 +27,21 @@ class ReaderThread(threading.Thread):
                 time.sleep(0.1)
 
     def append(self, msg):
-        self.stream.append(msg)
+        n = music21.note.Note()
+        n.midi = msg.getNoteNumber()
+        self.stream.append(n)
 
 
 class Reader():
+    def __init__(self, stream):
+        if stream is not None:
+            self.stream = stream
+        else:
+            stream = music21.stream.Stream()
+
     def __enter__(self):
         dev = rtmidi.RtMidiIn()
         self.collectors = []
-        self.stream = []
         for i in range(dev.getPortCount()):
             device = rtmidi.RtMidiIn()
             print 'OPENING', dev.getPortName(i)
@@ -51,6 +58,7 @@ class Reader():
 
 
 if __name__ == "__main__":
-    with Reader():
+    stream = music21.stream.Stream()
+    with Reader(stream):
         while True:
             pass
