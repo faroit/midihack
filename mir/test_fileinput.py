@@ -23,27 +23,33 @@ def findRepeat( seq ):
 
         # interpret "correlation"  as score value
         loopScore    = corrSeqBool[loopStartIdx];
-        print loopScore    
-        thresh = 0;
+        ##print loopScore    
+        thresh = 1;
         if loopScore >= thresh:
             loop = loopStartIdx;
         else:
             loop = -1
 
         return loop
+
+def analyzeStream( seq ):
+    ""
+    pass
  
 #s = converter.parse('./data/6.mid')
 
 #s.plot('pianoroll')
-s = converter.parse('./data/verySimple2bars.mid')
+s = converter.parse('./data/lessSimple2bars.mid')
+#s = converter.parse('./data/verySimple2bars.mid')
 chordList = [];
 sChords = s.chordify()
 sChordsFlat = sChords.flat
 for myChord in sChordsFlat:
     if "Chord" in myChord.classes:
-        chordList.append(myChord.pitchedCommonName)
-        numpyArray = np.array(chordList)
-        print findRepeat( numpyArray )
+        if 2 < len( myChord ) < 6: #and ( myChord.isTriad() ):
+            chordList.append(myChord.pitchedCommonName)
+            numpyArray = np.array(chordList)
+            print findRepeat( numpyArray )
 #        print xChord.pitchClasses
 #        print xChord.intervalVector
 
