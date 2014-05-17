@@ -44,7 +44,7 @@ class ReaderThread(threading.Thread):
         if msg.isNoteOn():
             n = music21.note.Note()
             n.midi = msg.getNoteNumber()
-            n.duration = music21.duration.Duration('breve')
+            n.duration = music21.duration.Duration('32nd')
             timestamp = self.ms_to_samples()
             self.stream.insert(timestamp, n)
             self.i = 0
@@ -54,7 +54,7 @@ class ReaderThread(threading.Thread):
         return diff * 480 / (60 * 1000)
 
 
-class Reader():
+class Reader(object):
     def __init__(self, stream=None):
         if stream is not None:
             self.stream = stream
@@ -70,10 +70,15 @@ class Reader():
             collector = ReaderThread(device, i, self.stream)
             collector.start()
             self.collectors.append(collector)
+        return self
 
     def __exit__(self, type, value, tb):
         for c in self.collectors:
             c.quit = True
+
+    def register(self, callback):
+        for i in self.collectors:
+            i.register(callback)
 
     def getStream(self):
         return self.stream
