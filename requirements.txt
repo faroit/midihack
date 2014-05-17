@@ -1,0 +1,2 @@
+git+https://github.com/faroit/pyrtmidi.git#egg=pyrtmidi
+git+https://github.com/cuthbertLab/music21.git#egg=music21
