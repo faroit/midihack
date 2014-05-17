@@ -1,4 +1,5 @@
 import sys
+import time
 import rtmidi
 import threading
 
@@ -38,6 +39,8 @@ class Collector(threading.Thread):
             msg = self.device.getMessage()
             if msg:
                 print_message(msg, self.portName)
+            else:
+                time.sleep(0.1)
 
 
 dev = rtmidi.RtMidiIn()
