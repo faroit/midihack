@@ -42,7 +42,7 @@ class ReaderThread(threading.Thread):
 
 
 class Reader():
-    def __init__(self, stream):
+    def __init__(self, stream=None):
         if stream is not None:
             self.stream = stream
         else:
