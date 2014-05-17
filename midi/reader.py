@@ -1,3 +1,4 @@
+from __future__ import division
 import time
 import rtmidi
 import music21
@@ -17,6 +18,7 @@ class ReaderThread(threading.Thread):
     def run(self):
         self.device.openPort(self.port)
         self.device.ignoreTypes(True, False, True)
+        self.start = time.time() * 1000
         while True:
             if self.quit:
                 return
@@ -30,9 +32,9 @@ class ReaderThread(threading.Thread):
         if msg.isNoteOn():
             n = music21.note.Note()
             n.midi = msg.getNoteNumber()
-            print n.midi
-            n.duration = music21.duration.Duration('half')
-            self.stream.insert(0, n)
+            n.duration = music21.duration.Duration('breve')
+            timestamp = self.ms_to_samples()
+            self.stream.insert(timestamp, n)
             theChords = stream.chordify()
             for thisChord in theChords.flat:
                 if 'Chord' not in thisChord.classes:  # not a chord
@@ -41,6 +43,10 @@ class ReaderThread(threading.Thread):
                     print "this is dominant"
                 else:
                     print thisChord.pitchedCommonName
+
+    def ms_to_samples(self):
+        diff = (time.time() * 1000) - self.start
+        return diff * 480 / (60 * 1000)
 
 
 class Reader():
