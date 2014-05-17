@@ -27,9 +27,11 @@ class ReaderThread(threading.Thread):
                 time.sleep(0.1)
 
     def append(self, msg):
-        n = music21.note.Note()
-        n.midi = msg.getNoteNumber()
-        self.stream.append(n)
+        if msg.isNoteOn():
+            n = music21.note.Note()
+            n.midi = msg.getNoteNumber()
+            n.duration = music21.duration.Duration('half')
+            self.stream.append(n)
 
 
 class Reader():
@@ -49,7 +51,7 @@ class Reader():
             collector.start()
             self.collectors.append(collector)
 
-    def __exit__(self):
+    def __exit__(self, type, value, tb):
         for c in self.collectors:
             c.quit = True
 
