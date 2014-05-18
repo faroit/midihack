@@ -30,12 +30,16 @@ def myCallback(stream, conn):
         chordList = []
         sChords = copy
         sChordsFlat = sChords.flat
+        lastChord = ""
         for myChord in sChordsFlat:
             if "Chord" in myChord.classes:
-                if 2 < len(myChord) < 6:  # and ( myChord.isTriad() ):
+                if 2 <= len(myChord) < 6 and  lastChord != myChord.pitchedCommonName:
+                    lastChord = myChord.pitchedCommonName;
                     chordList.append(myChord.pitchedCommonName)
                     numpyArray = np.array(chordList)
-                    idx, score = mir.mir.findRepeat(numpyArray)
+                    correlation = mir.mir.corrSequence(numpyArray)
+                    print correlation
+                    idx, score = mir.mir.findRepeat(correlation)
                     if idx is not None:
                         print "Found loop at " + str(idx)
                         print "Loop score:   " + str(score)
@@ -53,10 +57,17 @@ def myCallback(stream, conn):
     else:
         copy = stream
         noteList = []
+        lastNote = ""
         for myNote in copy:
-            noteList.append(myNote)
+            if lastNote != myNote:
+                noteList.append(myNote)
+                lastNote = myNote
+            else:
+                continue
             numpyArray = np.array(noteList)
-            idx, score = mir.mir.findRepeat(numpyArray)
+            correlation = mir.mir.corrSequence(numpyArray)
+            print correlation
+            idx, score = mir.mir.findRepeat(correlation)
             if idx is not None:
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
@@ -70,7 +81,6 @@ def myCallback(stream, conn):
                 conn.song.tracks[track].arm = False
                 track += 1
                 conn.song.tracks[track].arm = True
-
                 for i in range(len(stream.notes)):
                     stream.pop(0)
                 mode = 1
