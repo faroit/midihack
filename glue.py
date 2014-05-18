@@ -15,7 +15,7 @@ def printmatch(idx, score):
 
 
 def myCallback(stream, conn):
-    if len(stream) < 1:
+    if len(stream.notes) < 1:
         return
 
     if not conn.song.session_record:
