@@ -30,6 +30,8 @@ def myCallback(stream, conn):
                     if idx is not None:
                         print "Found loop at " + str(idx)
                         print "Loop score:   " + str(score)
+                        conn.song.trigger_session_record()
+
     else:
         copy = stream
         noteList = []
@@ -40,6 +42,7 @@ def myCallback(stream, conn):
             if idx is not None:
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
+                conn.song.trigger_session_record()
 
 
 stream = music21.stream.Stream()
