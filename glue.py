@@ -31,7 +31,8 @@ def myCallback(stream, conn):
                         print "Found loop at " + str(idx)
                         print "Loop score:   " + str(score)
                         conn.song.trigger_session_record()
-
+                        for i in range(len(stream.notes)):
+                            stream.pop(0)
     else:
         copy = stream
         noteList = []
@@ -43,6 +44,8 @@ def myCallback(stream, conn):
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
                 conn.song.trigger_session_record()
+                for i in range(len(stream.notes)):
+                    stream.pop(0)
 
 
 stream = music21.stream.Stream()
