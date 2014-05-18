@@ -45,12 +45,12 @@ def myCallback(stream, conn):
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
 
-                print 60 / 480 * (copy.notes[idx].offset -  copy[idx-1].offset)
-                time.sleep(60 / 480 * (copy.notes[idx].offset -  copy[idx-1].offset))
+                print 60 / 480 * (copy.notes[idx].offset - copy[idx-1].offset)
+                time.sleep(60 / 480 * (copy.notes[idx].offset -
+                                       copy[idx-1].offset))
                 conn.song.trigger_session_record()
                 for i in range(len(stream.notes)):
                     stream.pop(0)
-
 
 
 stream = music21.stream.Stream()
