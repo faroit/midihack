@@ -45,7 +45,7 @@ def myCallback(stream, conn):
                     chordList.append(myChord.pitchedCommonName)
                     numpyArray = np.array(chordList)
                     correlation = mir.mir.corrSequence(numpyArray)
-                    print correlation
+                    #print correlation
                     idx, score = mir.mir.findRepeat(correlation)
                     if idx is not None:
                         printmatch(idx, score)
@@ -73,7 +73,7 @@ def myCallback(stream, conn):
                 continue
             numpyArray = np.array(noteList)
             correlation = mir.mir.corrSequence(numpyArray)
-            print correlation
+            #print correlation
             idx, score = mir.mir.findRepeat(correlation)
             if idx is not None:
                 printmatch(idx, score)
@@ -91,7 +91,8 @@ def myCallback(stream, conn):
                     stream.pop(0)
                 mode = 1
 
-    print mode, track
+    print "."
+    #print mode, track
 
 stream = music21.stream.Stream()
 

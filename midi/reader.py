@@ -44,7 +44,7 @@ class ReaderThread(threading.Thread):
         if msg.isNoteOn():
             n = music21.note.Note()
             n.midi = msg.getNoteNumber()
-            n.duration = music21.duration.Duration('32nd')
+            n.duration = music21.duration.Duration('16th')
             timestamp = self.ms_to_samples()
             self.stream.insert(timestamp, n)
             self.i = 0
