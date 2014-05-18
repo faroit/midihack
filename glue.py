@@ -7,15 +7,23 @@ import music21
 import numpy as np
 from functools import partial
 
+def rgb(r, g, b, a):
+    return (r << 16) + (g << 8) + b
+
+mode = 0
+track = 0
 
 def myCallback(stream, conn):
+    global mode
+    global track
+
     if len(stream) < 1:
         return
 
     if not conn.song.session_record:
         conn.song.trigger_session_record()
 
-    if True:
+    if mode == 1:
         # stream.quantize()
         copy = stream.chordify()
         # copy.show('text')
@@ -34,8 +42,14 @@ def myCallback(stream, conn):
                         time.sleep(60 / 480 * (sChordsFlat[idx].offset -
                                                sChordsFlat[idx-1].offset))
                         conn.song.trigger_session_record()
+                        conn.song.tracks[track].name = "Chords"
+                        conn.song.tracks[track].color = rgb(100, 0, 255, 255)
+                        conn.song.tracks[track].arm = False
+                        track += 1
+                        conn.song.tracks[track].arm = True
                         for i in range(len(stream.notes)):
                             stream.pop(0)
+                        mode = 0
     else:
         copy = stream
         noteList = []
@@ -51,14 +65,26 @@ def myCallback(stream, conn):
                 time.sleep(60 / 480 * (copy.notes[idx].offset -
                                        copy[idx-1].offset))
                 conn.song.trigger_session_record()
+                conn.song.tracks[track].name = "Roll"
+                conn.song.tracks[track].color = rgb(237, 67, 37, 255)
+                conn.song.tracks[track].arm = False
+                track += 1
+                conn.song.tracks[track].arm = True
+
                 for i in range(len(stream.notes)):
                     stream.pop(0)
+                mode = 1
 
+    print mode, track
 
 stream = music21.stream.Stream()
 
 with midi.reader.Reader(stream) as myReader:
     conn = live.live.LiveConnection()
+    conn.song.tracks[0].arm = True
+    conn.song.tracks[1].arm = False
+    conn.song.tracks[2].arm = False
+    conn.song.tracks[3].arm = False
     myReader.register(partial(myCallback, stream, conn))
     while True:
         time.sleep(0.001)
