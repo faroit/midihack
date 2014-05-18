@@ -30,7 +30,7 @@ class ReaderThread(threading.Thread):
             else:
                 time.sleep(0.001)
             self.i += 1
-            if self.i == 10:
+            if self.i == 30:
                 self.dispatch()
 
     def register(self, callback):
