@@ -12,15 +12,9 @@ def findRepeat(seq):
     if len(seq) == 1:
         return None, -1
     else:
-        # compute "string correlation"
-        corrSeqBool  = corrSequence(seq)
+        loopStartIdx = seq[1:].argmax() + 1
+        loopScore    = seq[loopStartIdx]
 
-        # return index of loop start
-        loopStartIdx = corrSeqBool[1:].argmax() + 1
-
-        # interpret "correlation"  as score value
-        loopScore    = corrSeqBool[loopStartIdx]
-        #print loopScore
         thresh = 1
         if loopScore >= thresh:
             loop = loopStartIdx;

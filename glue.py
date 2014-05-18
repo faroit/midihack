@@ -27,7 +27,9 @@ def myCallback(stream, conn):
                 if 2 < len(myChord) < 6:  # and ( myChord.isTriad() ):
                     chordList.append(myChord.pitchedCommonName)
                     numpyArray = np.array(chordList)
-                    idx, score = mir.mir.findRepeat(numpyArray)
+                    correlation = mir.mir.corrSequence(numpyArray)
+                    print correlation
+                    idx, score = mir.mir.findRepeat(correlation)
                     if idx is not None:
                         print "Found loop at " + str(idx)
                         print "Loop score:   " + str(score)
@@ -42,7 +44,9 @@ def myCallback(stream, conn):
         for myNote in copy:
             noteList.append(myNote)
             numpyArray = np.array(noteList)
-            idx, score = mir.mir.findRepeat(numpyArray)
+            correlation = mir.mir.corrSequence(numpyArray)
+            print correlation
+            idx, score = mir.mir.findRepeat(correlation)
             if idx is not None:
                 print "Found loop at " + str(idx)
                 print "Loop score:   " + str(score)
