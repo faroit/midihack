@@ -8,6 +8,12 @@ import numpy as np
 from functools import partial
 
 
+def printmatch(idx, score):
+    print "LOOP FOUND"
+    print "Index " + str(idx)
+    print "Loop score:   " + str(score)
+
+
 def myCallback(stream, conn):
     if len(stream) < 1:
         return
@@ -31,8 +37,7 @@ def myCallback(stream, conn):
                     print correlation
                     idx, score = mir.mir.findRepeat(correlation)
                     if idx is not None:
-                        print "Found loop at " + str(idx)
-                        print "Loop score:   " + str(score)
+                        printmatch(idx, score)
                         time.sleep(60 / 480 * (sChordsFlat[idx].offset -
                                                sChordsFlat[idx-1].offset))
                         conn.song.trigger_session_record()
@@ -48,9 +53,7 @@ def myCallback(stream, conn):
             print correlation
             idx, score = mir.mir.findRepeat(correlation)
             if idx is not None:
-                print "Found loop at " + str(idx)
-                print "Loop score:   " + str(score)
-
+                printmatch(idx, score)
                 # print 60 / 480 * (copy.notes[idx].offset - copy[idx-1].offset)
                 time.sleep(60 / 480 * (copy.notes[idx].offset -
                                        copy[idx-1].offset))
