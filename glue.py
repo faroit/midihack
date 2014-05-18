@@ -1,12 +1,19 @@
-import numpy as np
 import mir
+import live
 import midi
 import time
 import music21
+import numpy as np
 from functools import partial
 
 
-def myCallback(stream):
+def myCallback(stream, conn):
+    if len(stream) < 1:
+        return
+
+    if not conn.song.session_record:
+        conn.song.trigger_session_record()
+
     if False:
         # stream.quantize()
         copy = stream.chordify()
@@ -38,6 +45,7 @@ def myCallback(stream):
 stream = music21.stream.Stream()
 
 with midi.reader.Reader(stream) as myReader:
-    myReader.register(partial(myCallback, stream))
+    conn = live.live.LiveConnection()
+    myReader.register(partial(myCallback, stream, conn))
     while True:
         time.sleep(0.001)
